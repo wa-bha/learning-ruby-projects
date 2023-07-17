@@ -25,7 +25,7 @@ class HangmanGame
     end
 
     # Check if the word has been found
-    def check_guess last_guess
+    def check_word_match
         current_word_guess = @word_teaser.split.join
 
         if @word == current_word_guess
@@ -49,7 +49,8 @@ class HangmanGame
             end
 
             update_word_teaser(guess)
-            check_guess(guess)
+            
+            check_word_match
 
             correct_letter_guess = @word.include? guess
             
