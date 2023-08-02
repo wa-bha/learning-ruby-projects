@@ -35,48 +35,50 @@ class HangmanGame
         end
     end
 
-    # Asks the user to input a letter
-    def get_guess
-        if @lives > 0
-            puts
-            puts "Enter a new letter to guess:"
-            guess = gets.chomp.upcase
-            
-            # Validate user input is a single valid letter
-            unless guess.match?(/[A-Za-z]/) && guess.length == 1
-                puts "Invalid guess! Please enter a single valid letter."
-                get_guess
-            end
+    # Returns a validated letter guess
+    def get_validated_guess
+        puts
+        puts "Enter a new letter to guess:"
+        guess = gets.chomp.upcase
 
-            update_word_teaser(guess)
-            
-            check_word_match
-
-            correct_letter_guess = @word.include? guess
-            
-            if correct_letter_guess
-                puts "You guessed '#{guess}' correctly!"
-                puts @word_teaser
-                get_guess
-            else
-                @lives -= 1
-                puts "You've guessed '#{guess}' incorrectly, you have #{@lives} lives left."
-                puts @word_teaser
-                get_guess
-            end
-        else
-            puts
-            puts "You've run out of lives, the word was #{@word}"
+        # Validate user input is a single valid letter
+        unless guess.match?(/[A-Za-z]/) && guess.length == 1
+            puts "Invalid guess! Please enter a single valid letter."
+            get_guess
         end
+
+        guess
+    end
+
+    # Checks if the guessed letter is correct and returns the appropriate message
+    def handle_guess last_guess 
+        is_guess_correct = @word.include? last_guess
+
+        if is_guess_correct
+            puts "You guessed '#{last_guess}' correctly!"
+        else
+            @lives -= 1
+            puts "You've guessed '#{last_guess}' incorrectly, you have #{@lives} lives left."
+        end
+
+        puts @word_teaser
     end
 
     def start
-        puts "A new game has started!, you have #{@lives} lives!"
+        puts "A new game has started! You have #{@lives} lives."
         
         puts
         puts @word_teaser
         puts "Your word is #{@word.size} letters long."
         
-        get_guess
+        while @lives > 0
+            guess = get_validated_guess
+            update_word_teaser(guess)
+            check_word_match
+            handle_guess(guess)        
+        end
+            
+        puts
+        puts "You've run out of lives, the word was #{@word}"
     end
 end
