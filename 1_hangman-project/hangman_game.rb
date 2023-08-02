@@ -4,7 +4,7 @@ class HangmanGame
     UNDERSCORE = "_"
 
     def initialize
-        @word = words.sample.upcase # Selecting a random word from the array of words
+        @word = WORDS.sample.upcase # Selecting a random word from the array of words
         @lives = 8
         @word_teaser = Array.new(@word.size, UNDERSCORE)
         @guessed_letters = []
