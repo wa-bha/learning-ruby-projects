@@ -73,7 +73,7 @@ class HangmanGame
         puts @word_teaser.join(" ")
         puts "Your word is #{@word.size} letters long."
         
-        while @lives > 0
+        while @lives.positive?
             guess = get_validated_guess
             update_word_teaser(guess)
             handle_guess(guess)
