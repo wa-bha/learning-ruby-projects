@@ -5,8 +5,9 @@ class HangmanGame
 
     def initialize
         @word = words.sample.upcase # Selecting a random word from the array of words
-        @lives = 8;
+        @lives = 8
         @word_teaser = Array.new(@word.size, UNDERSCORE)
+        @guessed_letters = []
 
         # Update the word_teaser with the last guess
         def update_word_teaser(last_guess)
@@ -30,17 +31,24 @@ class HangmanGame
 
         # Returns a validated letter guess
         def get_validated_guess
-            puts
-            puts "Enter a new letter to guess:"
-            guess = gets.chomp.upcase
+            loop do
+                puts
+                puts "Enter a new letter to guess:"
+                guess = gets.chomp.upcase
 
-            # Validate user input is a single valid letter
-            unless guess.match?(/[A-Za-z]/) && guess.length == 1
-                puts "Invalid guess! Please enter a single valid letter."
-                get_guess
+                # Validate user input is a single valid uppercase letter which has not already been guessed
+                if guess.match?(/[A-Z]/) && guess.length == 1
+                    if @guessed_letters.include?(guess)
+                        puts "You've already guessed '#{guess}'. Please guess a new letter."
+                        redo
+                    else
+                        @guessed_letters << guess
+                        return guess
+                    end
+                else
+                    puts "Invalid guess! Please enter a single valid uppercase letter."
+                end
             end
-
-            guess
         end
 
         # Checks if the guessed letter is correct and returns the appropriate message
