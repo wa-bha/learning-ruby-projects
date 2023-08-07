@@ -1,4 +1,2 @@
-def words
-    ["abandon", "jogging", "cricket"]
-end
+WORDS = ["abandon", "jogging", "cricket"]
   
